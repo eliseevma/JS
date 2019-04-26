@@ -1,7 +1,16 @@
 "use strict";
+let money, time;
 
-let money = +prompt("Ваш бюджет на месяц?","");
-let time = prompt('Введите дату в формате YYYY - MM - DD',"");
+function start () {
+    money = +prompt("Ваш бюджет на месяц?", "");
+    time = prompt('Введите дату в формате YYYY - MM - DD', "");
+
+    while (isNaN(money) || money == "" || money == null) {
+        money = +prompt("Ваш бюджет на месяц?", "");
+    }
+}
+
+start();
 
 
 let appData ={
@@ -9,37 +18,72 @@ let appData ={
     timeData: time,
     expenses:{},
     income:[],
-    savings: false
+    savings: true
 };
 
-for (let i = 0; i < 2; i++) {
-    let expanse = prompt("Введите обязательную статью расходов в этом месяце", "");
-    let cost = +prompt("Во сколько обойдется?", "");
-    if (typeof (expanse) === "string" && typeof (expanse) != null && typeof (cost) != null 
-    && expanse != "" && cost != "" && expanse.length < 50) {
-        appData.expenses[expanse] = cost;
+function chooseExpenses() {
+    for (let i = 0; i < 2; i++) {
+        let expanse = prompt("Введите обязательную статью расходов в этом месяце", "");
+        let cost = +prompt("Во сколько обойдется?", "");
+        if (typeof (expanse) === "string" && typeof (expanse) != null && typeof (cost) != null
+            && expanse != "" && cost != "" && expanse.length < 50) {
+            appData.expenses[expanse] = cost;
+            console.log('Done');
+        }else {
+            i = i - 1;
+        }
+        
+       
+    }    
+}
+chooseExpenses();
+
+function detectDayBudget() {
+    appData.budgetPerDay = (appData.budget / 30).toFixed();
+    alert(`Ваш бюджет на 1 день: ${appData.budgetPerDay} рублей`);
+}
+detectDayBudget();
+
+
+function detectLevel() {
+    if (appData.budgetPerDay < 100) {
+        console.log('Минимальный уровень достатка');
+    } else if (appData.budgetPerDay > 100 && appData.budgetPerDay < 2000) {
+        console.log('Средний уровень достатка')
+    } else if (appData.budgetPerDay > 2000) {
+        console.log('Большой уровень достатка');
+    } else {
+        console.log('Произошла ошибка')
     }
-    console.log('Не верно указанны данные');
 }
+detectLevel();
 
-appData.budgetPerDay = appData.budget / 30;
-console.log(`Ваш бюджет на 1 день: ${appData.budgetPerDay} рублей`);
 
-if (appData.budgetPerDay < 100) {
-    console.log('Минимальный уровень достатка');    
-} else if (appData.budgetPerDay > 100 && appData.budgetPerDay < 2000){
-    console.log('Средний уровень достатка')
-} else if (appData.budgetPerDay > 2000){
-    console.log('Большой уровень достатка');
-} else{
-    console.log('Произошла ошибка')
+
+function chekSavings() {
+    if (appData.savings == true) {
+        let save = +prompt("Какова сумма накоплений?",),
+            percent = +prompt("Под какокй процент?");
+
+        appData.monthIncome = save/100/12*percent;
+        alert(`Доход в месяц с вашего депозита: ${appData.monthIncome}`);
+    }
+    
 }
+chekSavings();
 
-/*
-Вопросы к этому заданию
-Сколько типов данных существует в JS? - 7
+function chooseOptExpenses() {
+    for (let i = 0; i < 3; i++) {
+        let a = prompt("Введите не обязательную статью расходов в этом месяце", "");
+        let b = +prompt("Во сколько обойдется?", "");
+        if (typeof (a) === "string" && typeof (a) != null && typeof (b) != null
+            && a != "" && b != "" && a.length < 50) {
+            appData.optionalExpenses[a] = b;
+            console.log('Done');
+        } else {
+            i = i - 1;
+        }
 
-Как вывести информацию в консоль? console.log();
 
-Какая функция операторов || и &&? соблюдение условия
-*/
+    } 
+}
