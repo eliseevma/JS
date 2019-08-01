@@ -73,12 +73,28 @@ let appData ={
         }
     },
     chooseIncome: function () {
-        let items = prompt('Что принесет дополнительный дохож? (Перечислите через запятую)');
+        let items = prompt('Что принесет дополнительный доход? (Перечислите через запятую)');
+        
+        while (items == "" || items == null) {
+             items = prompt('Что принесет дополнительный доход? (Перечислите через запятую)');
+        }
         appData.income = items.split(', ');
         appData.income.push(prompt('Может что-то еще?'));
         appData.income.sort();
-    }
+        appData.income.forEach(function (item, i) {
+            console.log(`${i}: ${item} `);
+        })
+
+        
+    },
+    
 };
+
+for (let key in appData) {
+    console.log(`Наша программа включает в себя данные: ${key}`);
+}
+
+
 
 
 
